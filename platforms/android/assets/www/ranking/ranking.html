@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link rel="stylesheet" type="text/css" href="../css/ionic.css">
+        <link rel="stylesheet" type="text/css" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+        <link rel="stylesheet" type="text/css" href="../css/index.css" />
+        <title>Demo Menu</title>
+    </head>
+    <body>
+		<div id="menuprincipal">
+			<div id="wrapperMenu">
+				<div class="scroller">
+					<div id="contenidoMenu">
+						<ul id="ulMenu">
+							<li>Menu Principal</li>
+							<li>
+								<div class="borde-menu color1"></div>
+								<a href="javascript:app.menuSlide('1');">
+									<div class="opcion"><i class="ion ion-home"></i>&nbsp;&nbsp;Inicio</div>
+									<!--<div class="descripcion">Descripcion opcion</div>-->
+								</a>
+							</li>
+							<li>
+								<div class="borde-menu color2"></div>
+								<a href="javascript:app.menuSlide('2');">
+									<div class="opcion"><i class="ion ion-help-circled"></i>&nbsp;&nbsp;Ayuda</div>
+								</a>
+							</li>
+							<li>
+								<div class="borde-menu color3"></div>
+								<a href="javascript:app.menuSlide('3');">
+									<div class="opcion"><i class="ion ion-close-circled"></i>&nbsp;&nbsp;Salir</div>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+    	<div id="cuerpo">
+	        <div id="header">
+	        	<a href="javascript:app.menuSlide('menu');">
+	        		<div class="btn">
+	        			<i class="icon ion-navicon-round" style="font-size: 27px;"></i>
+	        		</div>
+	        	</a>
+	        	<img class="logo" src="../img/logo.png" />
+				<div class="tabs-striped tabs-top tabs-icon-top tabs-background-positive tabs-color-light" style="z-index:2;">
+		        	<div class="tabs">
+		        		<a class="tab-item active" href="ranking">
+		        			<i class="icon ion-arrow-graph-up-right"></i>Ranking
+		        		</a>
+		        		<a class="tab-item" href="sent_challenge">
+		        			<i class="icon ion-paper-airplane"></i>Enviados
+		        		</a>
+		        		<a class="tab-item" href="receive_challenge">
+		        			<i class="icon ion-fireball"></i>Recibidos
+		        		</a>
+		        		<a class="tab-item" href="history">
+		        			<i class="icon ion-clipboard"></i>Historial
+		        		</a>
+				    </div>
+				</div>
+	    	</div>
+	        
+			<div id="wrapper">
+				<div class="scroller">
+					<div id="contenidoCuerpo"></div>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="../js/libs/jquery/jquery.js"></script>
+		<script type="text/javascript" src="../js/libs/jquery-mobile/jquery.mobile.custom.js"></script>
+		<script type="text/javascript" src="../js/libs/fastclick.js"></script>
+        <script type="text/javascript" src="../js/libs/iscroll.js"></script>
+        <script type="text/javascript" src="../js/index.js"></script>
+        <script type="text/javascript">
+        	$(function(){
+        		app.InitmenuSlide();
+        		$('#wrapper').on('swiperight', function(){
+        			app.menuSlide('menu');
+        		});
+
+        		$('#wrapper').on('swipeleft', function(){
+        			app.menuSlide('menu');
+        		});
+
+        	});
+        </script>
+    </body>
+</html>
