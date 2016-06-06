@@ -148,7 +148,7 @@ var app = (function(){
                         return false;
                     }
                     for (var i = 0; i < data.length; i++) {
-                        lista += '<li class="item item-icon-left" title="' + data[i].id + '">';
+                        lista += '<li class="item item-icon-left" alt="' + data[i].id + '">';
                         lista += '<i class="icon ion-ios-redo-outline"></i>' + data[i].titulo;
                         lista += '</li>';
                     }
@@ -200,7 +200,7 @@ var app = (function(){
             }
 
             for (var i = 0; i < data.length; i++) {
-                lista += '<li class="item item-icon-left" title="' + data[i].id + '">';
+                lista += '<li class="item item-icon-left" alt="' + data[i].id + '">';
                 lista += '<i class="icon ion-ios-redo-outline"></i>' + data[i].titulo;
                 lista += '</li>';
             }
@@ -248,6 +248,10 @@ var app = (function(){
         new FastClick(document.body);
     }
 
+    function getCourseById( elem ) {
+        //alert('Codigo: ' + elem);
+    }
+
     function TabNav() {
         $('.tab-item').each(function(){
             $(this).click(function(e){
@@ -266,6 +270,6 @@ var app = (function(){
         InitmenuSlide   : InitmenuSlide,
         menuSlide       : menuSlide,
         TabNav          : TabNav,
-        loadMoreData    : loadMoreData
+        getCourseById   : getCourseById
     };
 })();
