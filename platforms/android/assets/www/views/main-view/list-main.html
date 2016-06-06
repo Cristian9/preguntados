@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link rel="stylesheet" type="text/css" href="../../statics/css/ionic.css">
+        <link rel="stylesheet" type="text/css" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+        <link rel="stylesheet" media="all" type="text/css" href="../../statics/css/index.css" />
+        <title>Demo Menu</title>
+    </head>
+    <body>
+        <div id="cuerpo">
+            <div id="header" class="bar bar-header bar-positive">
+                <h1 class="title">Preguntados UTP</h1>
+            </div>
+            <div class="tabs-striped tabs-top tabs-icon-top tabs-background-positive tabs-color-light" style="z-index:2;">
+                <div class="tabs">
+                    <a class="tab-item active" id="list-courses">
+                        <i class="icon ion-ios-paper"></i>Cursos
+                    </a>
+                    <a class="tab-item" id="list-categories">
+                        <i class="icon ion-clipboard"></i>Categor&iacute;as
+                    </a>
+                </div>
+            </div>
+            
+            <div id="wrapper">
+                <div class="scroller">
+                    <div id="pullDown">
+                        <span class="pullDownIcon"></span><span class="pullDownLabel"></span>
+                    </div>
+
+                    <ul id="list"></ul>
+
+                    <div id="pullUp">
+                        <span class="pullUpIcon"></span><span class="pullUpLabel">Desliza para cargar m&aacute;s...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="../../statics/js/libs/jquery/jquery.js"></script>
+        <script type="text/javascript" src="../../statics/js/libs/fastclick.js"></script>
+        <script type="text/javascript" src="../../statics/js/libs/iscroll.js"></script>
+        <script type="text/javascript" src="../../statics/js/index.js"></script>
+        <script type="text/javascript">
+            $(function(){
+                app.getMainList('list-courses');
+                $('.tab-item').each(function(){
+                    $(this).click(function(){
+                        var href = $(this).attr('id');
+                        $(this).addClass('active');
+                        $('.tab-item').not($(this)).removeClass('active');
+                        app.getMainList(href);
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>

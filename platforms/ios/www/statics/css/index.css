@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-* {
+/** {
     -webkit-user-select: none;
-}
+}*/
 
 body {
     font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
@@ -29,6 +29,12 @@ body {
     margin:0;
     border:0;
     position: fixed;
+}
+
+body,ul,li {
+    padding:0;
+    margin:0;
+    border:0;
 }
 
 a {
@@ -184,9 +190,10 @@ h1 {
     margin:0;
     width:100%;
     text-align:left;
+    cursor: pointer;
 }
 
-.scroller li:first-child {
+/*.scroller li:first-child {
     padding:0 10px;
     border-bottom:1px solid #202328;
     border-top:1px solid #202529;
@@ -195,7 +202,7 @@ h1 {
     line-height:44px;
     font-size:14px;
     text-align:center;
-}
+}*/
 
 .scroller li {
     border-bottom:1px solid #202328;
@@ -205,7 +212,6 @@ h1 {
     height: 55px;
     color:#fff
 }
-
 
 .li-menu-activo{
     background-color:#323a40 !important;
@@ -275,3 +281,54 @@ h1 {
     animation:fade 3000ms infinite;
     -webkit-animation:fade 3000ms infinite;
 }*/
+
+
+/**
+ *
+ * Pull down styles
+ *
+ */
+#pullUp {
+    background:#fff;
+    height:50px;
+    line-height:40px;
+    padding:5px 10px;
+    border-bottom:1px solid #ccc;
+    font-weight:bold;
+    font-size:14px;
+    color:#888;
+}
+#pullUp .pullUpIcon  {
+    display:block; float:left;
+    width:40px; height:40px;
+    background:url(../img/pull-icon@2x.png) 0 0 no-repeat;
+    -webkit-background-size:40px 80px; background-size:40px 80px;
+    -webkit-transition-property:-webkit-transform;
+    -webkit-transition-duration:250ms;  
+}
+#pullDown {
+    -webkit-transform:rotate(0deg) translateZ(0);
+}
+#pullUp .pullUpIcon  {
+    -webkit-transform:rotate(-180deg) translateZ(0);
+}
+
+#pullUp.flip .pullUpIcon {
+    -webkit-transform:rotate(0deg) translateZ(0);
+}
+
+#pullUp.loading .pullUpIcon {
+    background-position:0 100%;
+    -webkit-transform:rotate(0deg) translateZ(0);
+    -webkit-transition-duration:0ms;
+
+    -webkit-animation-name:loading;
+    -webkit-animation-duration:2s;
+    -webkit-animation-iteration-count:infinite;
+    -webkit-animation-timing-function:linear;
+}
+
+@-webkit-keyframes loading {
+    from { -webkit-transform:rotate(0deg) translateZ(0); }
+    to { -webkit-transform:rotate(360deg) translateZ(0); }
+}

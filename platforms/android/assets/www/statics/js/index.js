@@ -3,6 +3,7 @@ var app = (function(){
     var estado,
         myScroll,
         myScrollMenu,
+        numberPage = 1,
         preload = {
             cargaOK : false,
             imageURL : "../../statics/img/ring.svg"
@@ -33,8 +34,8 @@ var app = (function(){
                     "iosdelay"       :   50, // ms to wait for the iOS webview to update before animation kicks in, default 60
                     "androiddelay"   :  70,  // same as above but for Android, default 70
                     "winphonedelay"  :  150, // same as above but for Windows Phone, default 200
-                    //"href"           : "main-view/list-courses.html"
-                    "href"           : "ranking/ranking.html"
+                    "href"           : "views/main-view/list-main.html"
+                    //"href"           : "views/ranking/ranking.html"
                 };
                 window.plugins.nativepagetransitions.flip(
                     options,
@@ -46,7 +47,7 @@ var app = (function(){
     }
 
     function StyleApp(topParam) {
-        var heightCuerpo=window.innerHeight-46;
+        var heightCuerpo=window.innerHeight-92/*46*/;
         var style = document.createElement('style');
         style.type = 'text/css';
         style.innerHTML = '.auxCSS { position:absolute; z-index:2; left:0; top:' + 
@@ -125,33 +126,123 @@ var app = (function(){
         }
     }
 
-    function ListCourses() {
+    function loadMoreData(page){
+        $('.tab-item').each(function(){
+            if($(this).hasClass('active')){
+                var href = $(this).attr('id');
+                $.ajax({
+                    type        : 'GET',
+                    url         : "http://10.30.15.218/API_Preguntados/" + href + "/",
+                    contentType : "application/json; charset=utf-8",
+                    dataType    : "json",
+                    data        : {
+                        'page' : page
+                    }
+                })
+                .done(function(data){
+                    var data = eval(data);
+                    var lista = "";
+                    if(data[0] == null) {
+                        pullUpEl.className = '';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = 'No hay registros para mostrar.';
+                        return false;
+                    }
+                    for (var i = 0; i < data.length; i++) {
+                        lista += '<li class="item item-icon-left" title="' + data[i].id + '">';
+                        lista += '<i class="icon ion-ios-redo-outline"></i>' + data[i].titulo;
+                        lista += '</li>';
+                    }
+
+                    $('#list').append(lista);
+                    myScroll.refresh();
+                });
+            }
+        });
+    }
+
+    function getMainList(href) {
         
-        StyleApp(45);
+        StyleApp(92);
 
         $('#wrapper').addClass('auxCSS');
-        $('#listaCursos').html($("<center style='padding:11%;'></center>").append(preload.imagen));
-        
+        $('#pullUp').css({'display' : 'none'});
+        $('#list').html($("<center style='padding:11%;'></center>").append(preload.imagen));
+
+        if(typeof myScroll != "undefined") {
+            myScroll.destroy();
+            myScroll = null;
+            
+            numberPage > 1 && (numberPage = 1);
+        }
+
         $.ajax({
-            type : 'GET',
-            url : "http://10.30.15.218/API_Preguntados/list-courses/",
+            type        : 'GET',
+            url         : "http://10.30.15.218/API_Preguntados/" + href + "/",
             contentType : "application/json; charset=utf-8",
-            dataType : "json"
+            dataType    : "json",
+            data        : {
+                'page'  : numberPage
+            }
         })
         .done(function(data){
             var data = eval(data);
-            var lista = '<div class="list">';
-            for (var i = 0; i < data.length; i++) {
-                lista += '<a class="item item-icon-left" href="#">';
-                lista += '<i class="icon ion-ios-redo-outline"></i>' + data[i].title;
-                lista += '</a>';
+            pullDownEl = document.getElementById('pullDown');
+            pullDownOffset = pullDownEl.offsetHeight;
+            pullUpEl = document.getElementById('pullUp');   
+            pullUpOffset = pullUpEl.offsetHeight;
+            var lista = '';
+
+            if(data[0] == null) {
+                $('#list').html($("<center style='padding:11%; color:#B33831; font-size:15px; font-weight:bold;'></center>")
+                          .append('No hay registros para mostrar'));
+
+                return false;
             }
-            
-            lista += '</div>';
 
-            $('#listaCursos').html(lista);
+            for (var i = 0; i < data.length; i++) {
+                lista += '<li class="item item-icon-left" title="' + data[i].id + '">';
+                lista += '<i class="icon ion-ios-redo-outline"></i>' + data[i].titulo;
+                lista += '</li>';
+            }
 
-            myScroll = new iScroll('wrapper', { hideScrollbar: true });
+            $('#list').html(lista);
+            $('#pullUp').css({'display' : 'block'});
+
+            myScroll = new iScroll('wrapper', { 
+                hideScrollbar: true,
+                onRefresh : function(){
+                    if (pullUpEl.className.match('loading')) {
+                        pullUpEl.className = '';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Desliza para cargar...';
+                    }
+                },
+                onScrollMove: function () {
+                    if (this.y > 5 && !pullDownEl.className.match('flip')) {
+                        pullDownEl.className = 'flip';
+                        this.minScrollY = 0;
+                    } else if (this.y < 5 && pullDownEl.className.match('flip')) {
+                        pullDownEl.className = '';
+                        this.minScrollY = -pullDownOffset;
+                    } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+                        pullUpEl.className = 'flip';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Suelta para cargar...';
+                        this.maxScrollY = this.maxScrollY;
+                    } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+                        pullUpEl.className = '';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Suelta para cargar...';
+                        this.maxScrollY = pullUpOffset;
+                    }
+                },
+                onScrollEnd: function () {
+                    if (pullDownEl.className.match('flip')) {
+
+                    } else if (pullUpEl.className.match('flip')) {
+                        pullUpEl.className = 'loading';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Cargando...';                
+                        loadMoreData((++numberPage));
+                    }
+                }
+            });
         });
         
         new FastClick(document.body);
@@ -171,9 +262,10 @@ var app = (function(){
 
     return {
         login           : login,
-        ListCourses     : ListCourses,
+        getMainList     : getMainList,
         InitmenuSlide   : InitmenuSlide,
         menuSlide       : menuSlide,
-        TabNav          : TabNav
+        TabNav          : TabNav,
+        loadMoreData    : loadMoreData
     };
 })();
