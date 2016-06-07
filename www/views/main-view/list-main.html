@@ -56,7 +56,7 @@
 
                 $('#list').on("click", "li", function(){
                     var courseCode = $(this).attr('alt');
-                    app.getCourseById(courseCode);
+                    app.getCourseById(courseCode, this);
                 });
             });
         </script>

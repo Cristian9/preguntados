@@ -29,15 +29,15 @@ var app = (function(){
                 window.localStorage.setItem("name", data[0].firstname);
 
                 var options = {
-                    "direction"      : "right", // 'left|right|up|down', default 'right' (Android currently only supports left and right)
+                    //"direction"      : "right", // 'left|right|up|down', default 'right' (Android currently only supports left and right)
                     "duration"       :  600, // in milliseconds (ms), default 400
                     "iosdelay"       :   50, // ms to wait for the iOS webview to update before animation kicks in, default 60
                     "androiddelay"   :  70,  // same as above but for Android, default 70
-                    "winphonedelay"  :  150, // same as above but for Windows Phone, default 200
+                    //"winphonedelay"  :  150, // same as above but for Windows Phone, default 200
                     "href"           : "views/main-view/list-main.html"
                     //"href"           : "views/ranking/ranking.html"
                 };
-                window.plugins.nativepagetransitions.flip(
+                window.plugins.nativepagetransitions.fade(
                     options,
                     function (msg) {console.log("success: " + msg)},
                     function (msg) {alert("error: " + msg)}
@@ -248,8 +248,30 @@ var app = (function(){
         new FastClick(document.body);
     }
 
-    function getCourseById( elem ) {
+    function getCourseById( id, elem ) {
         //alert('Codigo: ' + elem);
+        addClass('li-menu-activo' , elem);
+
+        
+
+        /*var options = {
+            //"direction"      : "right", // 'left|right|up|down', default 'right' (Android currently only supports left and right)
+            "duration"       :  600, // in milliseconds (ms), default 400
+            "iosdelay"       :   50, // ms to wait for the iOS webview to update before animation kicks in, default 60
+            "androiddelay"   :  70,  // same as above but for Android, default 70
+            //"winphonedelay"  :  150, // same as above but for Windows Phone, default 200
+            "href"           : "views/main-view/list-main.html"
+            //"href"           : "views/ranking/ranking.html"
+        };
+        window.plugins.nativepagetransitions.fade(
+            options,
+            function (msg) {console.log("success: " + msg)},
+            function (msg) {alert("error: " + msg)}
+        );*/
+
+        setTimeout(function() {
+            removeClass('li-menu-activo' , elem);
+        }, 300);
     }
 
     function TabNav() {
