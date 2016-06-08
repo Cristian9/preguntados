@@ -4,14 +4,14 @@ var app = (function(){
         myScroll,
         myScrollMenu,
         numberPage = 1,
-        preload = {
+        loadingImage = {
             cargaOK : false,
             imageURL : "../../statics/img/ring.svg"
         };
 
-    preload.imagen = new Image();
-    preload.imagen.src = preload.imageURL;
-    preload.imagen.onload = preload.cargaOK = true;
+    loadingImage.preload = new Image();
+    loadingImage.preload.src = loadingImage.imageURL;
+    loadingImage.preload.onload = loadingImage.cargaOK = true;
 
     function login() {
         var user = $('#txtuser').val();
@@ -166,7 +166,7 @@ var app = (function(){
 
         $('#wrapper').addClass('auxCSS');
         $('#pullUp').css({'display' : 'none'});
-        $('#list').html($("<center style='padding:11%;'></center>").append(preload.imagen));
+        $('#list').html($("<center style='padding:11%;'></center>").append(loadingImage.preload));
 
         if(typeof myScroll != "undefined") {
             myScroll.destroy();
@@ -251,6 +251,24 @@ var app = (function(){
     function getCourseById( id, elem ) {
         //alert('Codigo: ' + elem);
         addClass('li-menu-activo' , elem);
+
+
+
+        /*var options = {
+            //"direction"      : "right", // 'left|right|up|down', default 'right' (Android currently only supports left and right)
+            "duration"       :  600, // in milliseconds (ms), default 400
+            "iosdelay"       :   50, // ms to wait for the iOS webview to update before animation kicks in, default 60
+            "androiddelay"   :  70,  // same as above but for Android, default 70
+            //"winphonedelay"  :  150, // same as above but for Windows Phone, default 200
+            "href"           : "views/main-view/list-main.html"
+            //"href"           : "views/ranking/ranking.html"
+        };
+        window.plugins.nativepagetransitions.fade(
+            options,
+            function (msg) {console.log("success: " + msg)},
+            function (msg) {alert("error: " + msg)}
+        );*/
+
         setTimeout(function() {
             removeClass('li-menu-activo' , elem);
         }, 300);

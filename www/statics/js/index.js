@@ -4,14 +4,14 @@ var app = (function(){
         myScroll,
         myScrollMenu,
         numberPage = 1,
-        preload = {
+        loadingImage = {
             cargaOK : false,
             imageURL : "../../statics/img/ring.svg"
         };
 
-    preload.imagen = new Image();
-    preload.imagen.src = preload.imageURL;
-    preload.imagen.onload = preload.cargaOK = true;
+    loadingImage.preload = new Image();
+    loadingImage.preload.src = loadingImage.imageURL;
+    loadingImage.preload.onload = loadingImage.cargaOK = true;
 
     function login() {
         var user = $('#txtuser').val();
@@ -166,7 +166,7 @@ var app = (function(){
 
         $('#wrapper').addClass('auxCSS');
         $('#pullUp').css({'display' : 'none'});
-        $('#list').html($("<center style='padding:11%;'></center>").append(preload.imagen));
+        $('#list').html($("<center style='padding:11%;'></center>").append(loadingImage.preload));
 
         if(typeof myScroll != "undefined") {
             myScroll.destroy();
@@ -252,7 +252,7 @@ var app = (function(){
         //alert('Codigo: ' + elem);
         addClass('li-menu-activo' , elem);
 
-        
+
 
         /*var options = {
             //"direction"      : "right", // 'left|right|up|down', default 'right' (Android currently only supports left and right)
