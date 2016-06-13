@@ -25,40 +25,54 @@
             
             <div id="wrapper">
                 <div class="scroller">
-                    <div id="pullDown">
+                    <div id="pullDown"  class="hide">
                         <span class="pullDownIcon"></span><span class="pullDownLabel"></span>
                     </div>
 
                     <ul id="list"></ul>
 
-                    <div id="pullUp">
+                    <div id="pullUp"  class="hide">
                         <span class="pullUpIcon"></span><span class="pullUpLabel">Desliza para cargar m&aacute;s...</span>
                     </div>
                 </div>
             </div>
         </div>
-
+        <script type="text/javascript" src="../../cordova.js"></script>
         <script type="text/javascript" src="../../statics/js/libs/jquery/jquery.js"></script>
         <script type="text/javascript" src="../../statics/js/libs/fastclick.js"></script>
         <script type="text/javascript" src="../../statics/js/libs/iscroll.js"></script>
         <script type="text/javascript" src="../../statics/js/index.js"></script>
         <script type="text/javascript">
-            $(function(){
-                app.getMainList('list-courses');
+            document.addEventListener("deviceready", onReady, false);
+
+            function onReady() {
+                window.plugins.nativepagetransitions.executePendingTransition();
+
+                spinnerplugin.hide();
+
+                app.getMainList({
+                    href : 'list-courses',
+                    func : 'renderDefaultList'
+                });
+
                 $('.tab-item').each(function(){
                     $(this).click(function(){
                         var href = $(this).attr('id');
                         $(this).addClass('active');
                         $('.tab-item').not($(this)).removeClass('active');
-                        app.getMainList(href);
+                        app.getMainList({
+                            href : href,
+                            func : 'renderDefaultList'
+                        });
                     });
                 });
 
                 $('#list').on("click", "li", function(){
                     var courseCode = $(this).attr('alt');
-                    app.getCourseById(courseCode, this);
+                    window.localStorage.setItem("courseId", courseCode);
+                    app.transition('view-theme.html', 'left');
                 });
-            });
+            }
         </script>
     </body>
 </html>

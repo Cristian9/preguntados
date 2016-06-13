@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link rel="stylesheet" type="text/css" href="statics/css/ionic.css">
+        <link rel="stylesheet" type="text/css" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+        <link rel="stylesheet" type="text/css" href="statics/css/index.css">
+        <title>Preguntados Game</title>
+    </head>
+    <body>
+        <!--<div class="app">
+            <h1>Apache Cordova</h1>
+            <div id="deviceready" class="blink">
+                <p class="event listening">Connecting to Device</p>
+                <p class="event received">Device is Ready</p>
+            </div>
+        </div>-->
+        <div class="bar bar-header bar-positive">
+            <h1 class="title">Preguntados UTP</h1>
+        </div>
+
+        <div class="content has-header form-login">
+            <div class="list">
+                <label class="item item-input item-stacked-label" style="border-top: none;">
+                    <span class="input-label">C&oacute;digo de alumno</span>
+                    <input type="text" placeholder="E15206" id="txtuser">
+                </label>
+                <label class="item item-input item-stacked-label" style="border-top: none;">
+                    <span class="input-label">Contrase&ntilde;a</span>
+                    <input type="password" placeholder="********" id="txtpass">
+                </label>
+            </div>
+            <div class="padding">
+                <center>
+                    <button class="button icon-left ion-star button-positive" id="btnlogin">Ingresar</button>
+                </center>
+            </div>
+            <center>
+                <div class="padding" id="message"></div>
+            </center>
+        </div>
+
+        <script type="text/javascript" src="statics/js/libs/jquery/jquery.js"></script>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="statics/js/index.js"></script>
+        <script type="text/javascript">
+            $(function () {
+                $('#btnlogin').click(function () {
+                    app.login();
+                });
+            });
+        </script>
+    </body>
+</html>

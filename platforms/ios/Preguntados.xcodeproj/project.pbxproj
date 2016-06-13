@@ -17,6 +17,8 @@
 		3047A5141AB8059700498E2A /* build.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3047A5111AB8059700498E2A /* build.xcconfig */; };
 		5F7993C5965849A7A2C580C7 /* NativePageTransitions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8585C3E1267141118A2B3BA2 /* NativePageTransitions.m */; };
 		78DDCE5F8CF241A1B2FEF0E3 /* AppDelegate+nativepagetransitions.m in Sources */ = {isa = PBXBuildFile; fileRef = E8EAC875F50746ECA8715673 /* AppDelegate+nativepagetransitions.m */; };
+		AED28A7A3EBA4ED2A1887F4E /* NativeTransitions.m in Sources */ = {isa = PBXBuildFile; fileRef = CFF1185D02EB426A835AAED5 /* NativeTransitions.m */; };
+		297F703B5B6C4C10A1341616 /* SpinnerPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = FCF1EC674EFB4EF8B15AB027 /* SpinnerPlugin.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +62,10 @@
 		E8EAC875F50746ECA8715673 /* AppDelegate+nativepagetransitions.m */ = {isa = PBXFileReference; name = "AppDelegate+nativepagetransitions.m"; path = "com.telerik.plugins.nativepagetransitions/AppDelegate+nativepagetransitions.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
 		67AC2DE1CC7B4D5D9F10702A /* NativePageTransitions.h */ = {isa = PBXFileReference; name = "NativePageTransitions.h"; path = "com.telerik.plugins.nativepagetransitions/NativePageTransitions.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 		559B13EF685B455D9FF5EF03 /* AppDelegate+nativepagetransitions.h */ = {isa = PBXFileReference; name = "AppDelegate+nativepagetransitions.h"; path = "com.telerik.plugins.nativepagetransitions/AppDelegate+nativepagetransitions.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		CFF1185D02EB426A835AAED5 /* NativeTransitions.m */ = {isa = PBXFileReference; name = "NativeTransitions.m"; path = "cordova-plugin-native-transitions/NativeTransitions.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		3DAAD69D8BEC4705BB1BC656 /* NativeTransitions.h */ = {isa = PBXFileReference; name = "NativeTransitions.h"; path = "cordova-plugin-native-transitions/NativeTransitions.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		FCF1EC674EFB4EF8B15AB027 /* SpinnerPlugin.m */ = {isa = PBXFileReference; name = "SpinnerPlugin.m"; path = "it.mobimentum.phonegapspinnerplugin/SpinnerPlugin.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		E6F187EA24664A6F9D5FEEA9 /* SpinnerPlugin.h */ = {isa = PBXFileReference; name = "SpinnerPlugin.h"; path = "it.mobimentum.phonegapspinnerplugin/SpinnerPlugin.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +172,10 @@
 				E8EAC875F50746ECA8715673 /* AppDelegate+nativepagetransitions.m */,
 				67AC2DE1CC7B4D5D9F10702A /* NativePageTransitions.h */,
 				559B13EF685B455D9FF5EF03 /* AppDelegate+nativepagetransitions.h */,
+				CFF1185D02EB426A835AAED5 /* NativeTransitions.m */,
+				3DAAD69D8BEC4705BB1BC656 /* NativeTransitions.h */,
+				FCF1EC674EFB4EF8B15AB027 /* SpinnerPlugin.m */,
+				E6F187EA24664A6F9D5FEEA9 /* SpinnerPlugin.h */,
 			);
 			name = Plugins;
 			path = "Preguntados/Plugins";
@@ -282,6 +292,8 @@
 				302D95F114D2391D003F00A1 /* MainViewController.m in Sources */,
 				5F7993C5965849A7A2C580C7 /* NativePageTransitions.m in Sources */,
 				78DDCE5F8CF241A1B2FEF0E3 /* AppDelegate+nativepagetransitions.m in Sources */,
+				AED28A7A3EBA4ED2A1887F4E /* NativeTransitions.m in Sources */,
+				297F703B5B6C4C10A1341616 /* SpinnerPlugin.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

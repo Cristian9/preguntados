@@ -212,7 +212,9 @@ h1 {
     height: 55px;
     color:#fff
 }
-
+#list li:active{
+    background-color:#323a40 !important;
+}
 .li-menu-activo{
     background-color:#323a40 !important;
 }
@@ -220,6 +222,14 @@ h1 {
 .scroller li a{
     width:100%;
     text-decoration: none;
+}
+
+.hide {
+    display: none;
+}
+
+.show {
+    display: block;
 }
 
 .scroller li .opcion{

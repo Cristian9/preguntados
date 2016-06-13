@@ -1,0 +1,24 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "com.telerik.plugins.nativepagetransitions": {
+            "PACKAGE_NAME": "com.utp.preguntados"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.utp.preguntados"
+        },
+        "cordova-plugin-native-transitions": {
+            "PACKAGE_NAME": "com.utp.preguntados"
+        },
+        "it.mobimentum.phonegapspinnerplugin": {
+            "PACKAGE_NAME": "com.utp.preguntados"
+        }
+    },
+    "dependent_plugins": {}
+}

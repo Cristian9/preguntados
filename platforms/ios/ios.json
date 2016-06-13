@@ -11,6 +11,14 @@
                         {
                             "xml": "<feature name=\"NativePageTransitions\"><param name=\"ios-package\" value=\"NativePageTransitions\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"NativeTransitions\"><param name=\"ios-package\" value=\"NativeTransitions\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"SpinnerPlugin\"><param name=\"ios-package\" value=\"SpinnerPlugin\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -23,6 +31,12 @@
         },
         "com.telerik.plugins.nativepagetransitions": {
             "PACKAGE_NAME": "com.utp.preguntados"
+        },
+        "cordova-plugin-native-transitions": {
+            "PACKAGE_NAME": "com.utp.preguntados"
+        },
+        "it.mobimentum.phonegapspinnerplugin": {
+            "PACKAGE_NAME": "com.utp.preguntados"
         }
     },
     "dependent_plugins": {},
@@ -34,10 +48,28 @@
             "clobbers": [
                 "window.plugins.nativepagetransitions"
             ]
+        },
+        {
+            "file": "plugins/cordova-plugin-native-transitions/www/nativetransitions.js",
+            "id": "cordova-plugin-native-transitions.NativeTransitions",
+            "pluginId": "cordova-plugin-native-transitions",
+            "clobbers": [
+                "nativetransitions"
+            ]
+        },
+        {
+            "file": "plugins/it.mobimentum.phonegapspinnerplugin/www/spinnerplugin.js",
+            "id": "it.mobimentum.phonegapspinnerplugin.SpinnerPlugin",
+            "pluginId": "it.mobimentum.phonegapspinnerplugin",
+            "clobbers": [
+                "window.spinnerplugin"
+            ]
         }
     ],
     "plugin_metadata": {
         "cordova-plugin-whitelist": "1.2.2",
-        "com.telerik.plugins.nativepagetransitions": "0.6.3"
+        "com.telerik.plugins.nativepagetransitions": "0.6.3",
+        "cordova-plugin-native-transitions": "0.2.3",
+        "it.mobimentum.phonegapspinnerplugin": "1.2.1"
     }
 }

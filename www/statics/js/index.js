@@ -7,7 +7,8 @@ var app = (function(){
         loadingImage = {
             cargaOK : false,
             imageURL : "../../statics/img/ring.svg"
-        };
+        },
+        domainURL = "http://10.30.15.218/API_Preguntados";
 
     loadingImage.preload = new Image();
     loadingImage.preload.src = loadingImage.imageURL;
@@ -17,33 +18,35 @@ var app = (function(){
         var user = $('#txtuser').val();
         var pass = $('#txtpass').val();
 
-        $.post("http://10.30.15.218/API_Preguntados/login/", {
+        spinnerplugin.show();
+
+        $.post(domainURL + "/login/", {
             user : user,
             pass : pass
         })
-        .done(function(data){
+        .done(function(data) {
             var data = eval(data);
-            if(!data){
+            if(!data) {
                 $('#message').text('Error de inicio de sesion');
-            }else{
+            } else {
                 window.localStorage.setItem("name", data[0].firstname);
 
                 var options = {
-                    //"direction"      : "right", // 'left|right|up|down', default 'right' (Android currently only supports left and right)
-                    "duration"       :  600, // in milliseconds (ms), default 400
-                    "iosdelay"       :   50, // ms to wait for the iOS webview to update before animation kicks in, default 60
-                    "androiddelay"   :  70,  // same as above but for Android, default 70
-                    //"winphonedelay"  :  150, // same as above but for Windows Phone, default 200
+                    "direction"      : "right",
+                    "duration"       :  600,
+                    "iosdelay"       :   -1,
+                    "androiddelay"   :  -1,
+                    "winphonedelay"  :  150,
                     "href"           : "views/main-view/list-main.html"
-                    //"href"           : "views/ranking/ranking.html"
                 };
-                window.plugins.nativepagetransitions.fade(
+                window.plugins.nativepagetransitions.flip(
                     options,
                     function (msg) {console.log("success: " + msg)},
                     function (msg) {alert("error: " + msg)}
                 );
             }
         });
+        
     }
 
     function StyleApp(topParam) {
@@ -132,7 +135,7 @@ var app = (function(){
                 var href = $(this).attr('id');
                 $.ajax({
                     type        : 'GET',
-                    url         : "http://10.30.15.218/API_Preguntados/" + href + "/",
+                    url         : domainURL + "/" + href + "/",
                     contentType : "application/json; charset=utf-8",
                     dataType    : "json",
                     data        : {
@@ -149,7 +152,7 @@ var app = (function(){
                     }
                     for (var i = 0; i < data.length; i++) {
                         lista += '<li class="item item-icon-left" alt="' + data[i].id + '">';
-                        lista += '<i class="icon ion-ios-redo-outline"></i>' + data[i].titulo;
+                        lista += '<i class="icon ion-ios-redo-outline"></i>' + data[i].description;
                         lista += '</li>';
                     }
 
@@ -160,12 +163,84 @@ var app = (function(){
         });
     }
 
-    function getMainList(href) {
-        
+    function ScrollMove() {
+        pullDownEl = document.getElementById('pullDown');
+        pullDownOffset = pullDownEl.offsetHeight;
+        pullUpEl = document.getElementById('pullUp');   
+        pullUpOffset = pullUpEl.offsetHeight;
+
+        myScroll = new iScroll('wrapper', { 
+            hideScrollbar: true,
+            onRefresh : function(){
+                if (pullUpEl.className.match('loading')) {
+                    pullUpEl.className = '';
+                    pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Desliza para cargar...';
+                }
+            },
+            onScrollMove: function () {
+                if (this.y > 5 && !pullDownEl.className.match('flip')) {
+                    pullDownEl.className = 'flip';
+                    this.minScrollY = 0;
+                } else if (this.y < 5 && pullDownEl.className.match('flip')) {
+                    pullDownEl.className = '';
+                    this.minScrollY = -pullDownOffset;
+                } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+                    pullUpEl.className = 'flip';
+                    pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Suelta para cargar...';
+                    this.maxScrollY = this.maxScrollY;
+                } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+                    pullUpEl.className = '';
+                    pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Suelta para cargar...';
+                    this.maxScrollY = pullUpOffset;
+                }
+            },
+            onScrollEnd: function () {
+                if (pullDownEl.className.match('flip')) {
+
+                } else if (pullUpEl.className.match('flip')) {
+                    pullUpEl.className = 'loading';
+                    pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Cargando...';                
+                    loadMoreData((++numberPage));
+                }
+            }
+        });
+    }
+
+    function renderDefaultList(data) {
+        var lista = '';
+
+        for (var i = 0; i < data.length; i++) {
+            lista += '<li class="item item-icon-left" alt="' + data[i].id + '">';
+            lista += '<i class="icon ion-ios-redo-outline"></i>' + data[i].description;
+            lista += '</li>';
+        }
+
+        return lista;
+    }
+
+    function renderRanking(data) {
+        var lista = "";
+
+        for (var i = 0; i < data.length; i++) {
+            lista += '<div class="item item-button-right">' + data[i].usuario +  
+                    '<button class="button button-positive">' + 
+                    'RETAR' + 
+                    '</button></div>';
+        };
+
+        return lista;
+    }
+
+    function getMainList(option) {
+
+        var href = option.href,
+            func = option.func,
+            args = option.args || "";
+
         StyleApp(92);
 
         $('#wrapper').addClass('auxCSS');
-        $('#pullUp').css({'display' : 'none'});
+
         $('#list').html($("<center style='padding:11%;'></center>").append(loadingImage.preload));
 
         if(typeof myScroll != "undefined") {
@@ -177,7 +252,7 @@ var app = (function(){
 
         $.ajax({
             type        : 'GET',
-            url         : "http://10.30.15.218/API_Preguntados/" + href + "/",
+            url         : domainURL + "/" + href + "/" + args,
             contentType : "application/json; charset=utf-8",
             dataType    : "json",
             data        : {
@@ -186,11 +261,6 @@ var app = (function(){
         })
         .done(function(data){
             var data = eval(data);
-            pullDownEl = document.getElementById('pullDown');
-            pullDownOffset = pullDownEl.offsetHeight;
-            pullUpEl = document.getElementById('pullUp');   
-            pullUpOffset = pullUpEl.offsetHeight;
-            var lista = '';
 
             if(data[0] == null) {
                 $('#list').html($("<center style='padding:11%; color:#B33831; font-size:15px; font-weight:bold;'></center>")
@@ -199,79 +269,35 @@ var app = (function(){
                 return false;
             }
 
-            for (var i = 0; i < data.length; i++) {
-                lista += '<li class="item item-icon-left" alt="' + data[i].id + '">';
-                lista += '<i class="icon ion-ios-redo-outline"></i>' + data[i].titulo;
-                lista += '</li>';
-            }
+            var list = eval(func + "(data)");
+            
+            $('#list').html(list);
 
-            $('#list').html(lista);
-            $('#pullUp').css({'display' : 'block'});
+            $('#pullUp, #pullDown').removeClass('hide').addClass('show');
 
-            myScroll = new iScroll('wrapper', { 
-                hideScrollbar: true,
-                onRefresh : function(){
-                    if (pullUpEl.className.match('loading')) {
-                        pullUpEl.className = '';
-                        pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Desliza para cargar...';
-                    }
-                },
-                onScrollMove: function () {
-                    if (this.y > 5 && !pullDownEl.className.match('flip')) {
-                        pullDownEl.className = 'flip';
-                        this.minScrollY = 0;
-                    } else if (this.y < 5 && pullDownEl.className.match('flip')) {
-                        pullDownEl.className = '';
-                        this.minScrollY = -pullDownOffset;
-                    } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
-                        pullUpEl.className = 'flip';
-                        pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Suelta para cargar...';
-                        this.maxScrollY = this.maxScrollY;
-                    } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
-                        pullUpEl.className = '';
-                        pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Suelta para cargar...';
-                        this.maxScrollY = pullUpOffset;
-                    }
-                },
-                onScrollEnd: function () {
-                    if (pullDownEl.className.match('flip')) {
-
-                    } else if (pullUpEl.className.match('flip')) {
-                        pullUpEl.className = 'loading';
-                        pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Cargando...';                
-                        loadMoreData((++numberPage));
-                    }
-                }
-            });
+            ScrollMove();
         });
         
         new FastClick(document.body);
     }
 
-    function getCourseById( id, elem ) {
-        //alert('Codigo: ' + elem);
-        addClass('li-menu-activo' , elem);
-
-
-
-        /*var options = {
-            //"direction"      : "right", // 'left|right|up|down', default 'right' (Android currently only supports left and right)
-            "duration"       :  600, // in milliseconds (ms), default 400
-            "iosdelay"       :   50, // ms to wait for the iOS webview to update before animation kicks in, default 60
-            "androiddelay"   :  70,  // same as above but for Android, default 70
-            //"winphonedelay"  :  150, // same as above but for Windows Phone, default 200
-            "href"           : "views/main-view/list-main.html"
-            //"href"           : "views/ranking/ranking.html"
+    function transition( href, direction ) {
+        spinnerplugin.show();
+        
+        var options = {
+            "href" : href,
+            "direction" : direction,
+            "duration" : 600,
+            "androiddelay" : 500,
+            "iosdelay" : 500
         };
-        window.plugins.nativepagetransitions.fade(
+
+        window.plugins.nativepagetransitions.slide(
             options,
             function (msg) {console.log("success: " + msg)},
             function (msg) {alert("error: " + msg)}
-        );*/
-
-        setTimeout(function() {
-            removeClass('li-menu-activo' , elem);
-        }, 300);
+        );
+        new FastClick(document.body);
     }
 
     function TabNav() {
@@ -292,6 +318,6 @@ var app = (function(){
         InitmenuSlide   : InitmenuSlide,
         menuSlide       : menuSlide,
         TabNav          : TabNav,
-        getCourseById   : getCourseById
+        transition      : transition
     };
 })();

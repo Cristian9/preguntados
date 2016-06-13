@@ -18,6 +18,13 @@
     <feature name="NativePageTransitions">
         <param name="ios-package" value="NativePageTransitions" />
     </feature>
+    <feature name="NativeTransitions">
+        <param name="ios-package" value="NativeTransitions" />
+        <param name="onload" value="true" />
+    </feature>
+    <feature name="SpinnerPlugin">
+        <param name="ios-package" value="SpinnerPlugin" />
+    </feature>
     <name>Preguntados</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.

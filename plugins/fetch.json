@@ -14,5 +14,22 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "cordova-plugin-native-transitions": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-native-transitions"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "it.mobimentum.phonegapspinnerplugin": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/mobimentum/phonegap-plugin-loading-spinner.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }
