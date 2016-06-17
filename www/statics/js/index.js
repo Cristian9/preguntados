@@ -151,9 +151,9 @@ var app = (function(){
                         return false;
                     }
                     for (var i = 0; i < data.length; i++) {
-                        lista += '<li class="item item-icon-left" alt="' + data[i].id + '">';
+                        lista += '<li><a data-transition="slide" class="item item-icon-left" alt="' + data[i].id + '">';
                         lista += '<i class="icon ion-ios-redo-outline"></i>' + data[i].description;
-                        lista += '</li>';
+                        lista += '</a></li>';
                     }
 
                     $('#list').append(lista);
@@ -210,9 +210,9 @@ var app = (function(){
         var lista = '';
 
         for (var i = 0; i < data.length; i++) {
-            lista += '<li class="item item-icon-left" alt="' + data[i].id + '">';
+            lista += '<li><a data-transition="slide" class="item item-icon-left" alt="' + data[i].id + '">';
             lista += '<i class="icon ion-ios-redo-outline"></i>' + data[i].description;
-            lista += '</li>';
+            lista += '</a></li>';
         }
 
         return lista;
@@ -241,7 +241,7 @@ var app = (function(){
 
         $('#wrapper').addClass('auxCSS');
 
-        $('#list').html($("<center style='padding:11%;'></center>").append(loadingImage.preload));
+        //$('#list').html($("<center style='padding:11%;'></center>").append(loadingImage.preload));
 
         if(typeof myScroll != "undefined") {
             myScroll.destroy();
@@ -249,6 +249,13 @@ var app = (function(){
             
             numberPage > 1 && (numberPage = 1);
         }
+
+        $.mobile.loading('show', {
+            text : 'Cargando...',
+            textVisible : true,
+            theme : 'b',
+            textonly : false
+        });
 
         $.ajax({
             type        : 'GET',
@@ -261,6 +268,8 @@ var app = (function(){
         })
         .done(function(data){
             var data = eval(data);
+            
+            $.mobile.loading("hide");
 
             if(data[0] == null) {
                 $('#list').html($("<center style='padding:11%; color:#B33831; font-size:15px; font-weight:bold;'></center>")
@@ -286,13 +295,13 @@ var app = (function(){
         
         var options = {
             "href" : href,
-            "direction" : direction,
+            //"direction" : direction,
             "duration" : 600,
-            "androiddelay" : 500,
-            "iosdelay" : 500
+            "androiddelay" : -1,
+            "iosdelay" : -1
         };
 
-        window.plugins.nativepagetransitions.slide(
+        window.plugins.nativepagetransitions.fade(
             options,
             function (msg) {console.log("success: " + msg)},
             function (msg) {alert("error: " + msg)}

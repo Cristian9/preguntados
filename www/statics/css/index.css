@@ -45,6 +45,14 @@ a {
 
 }
 
+.ui-page-theme-a, a{
+    font-weight: 100 !important;
+}
+
+.ui-overlay-a, .ui-page-theme-a, .ui-page-theme-a .ui-panel-wrapper {
+    text-shadow: 0 1px 0 rgba(243, 243, 243, 0);
+}
+
 h1 {
     font-size:24px;
     font-weight:normal;
@@ -184,6 +192,10 @@ h1 {
     padding:0;
 }
 
+.ui-loader h1 {
+    color: #fff !important;
+}
+
 .scroller ul {
     list-style:none;
     padding:0;
@@ -204,17 +216,28 @@ h1 {
     text-align:center;
 }*/
 
-.scroller li {
+.scroller li a {
     border-bottom:1px solid #202328;
     border-top:1px solid #202529;
     background-color:#181c1f;
     /*height:88px;*/
     height: 55px;
-    color:#fff
+    color:#fff;
 }
-#list li:active{
+
+#list a:hover {
+    color:#fff !important;
+}
+
+#list a:active{
     background-color:#323a40 !important;
 }
+
+#list a:visited{
+    background-color:#181c1f !important;
+    color:#fff !important;
+}
+
 .li-menu-activo{
     background-color:#323a40 !important;
 }

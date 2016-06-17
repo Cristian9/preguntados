@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
         <link rel="stylesheet" type="text/css" href="../../statics/css/ionic.css">
         <link rel="stylesheet" type="text/css" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
         <link rel="stylesheet" media="all" type="text/css" href="../../statics/css/index.css" />
@@ -39,6 +40,7 @@
         </div>
         <script type="text/javascript" src="../../cordova.js"></script>
         <script type="text/javascript" src="../../statics/js/libs/jquery/jquery.js"></script>
+        <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
         <script type="text/javascript" src="../../statics/js/libs/fastclick.js"></script>
         <script type="text/javascript" src="../../statics/js/libs/iscroll.js"></script>
         <script type="text/javascript" src="../../statics/js/index.js"></script>
@@ -50,7 +52,7 @@
 
                 spinnerplugin.hide();
 
-                app.getMainList({
+                 app.getMainList({
                     href : 'list-courses',
                     func : 'renderDefaultList'
                 });
@@ -67,7 +69,7 @@
                     });
                 });
 
-                $('#list').on("click", "li", function(){
+                $('#list').on("click", "a", function(){
                     var courseCode = $(this).attr('alt');
                     window.localStorage.setItem("courseId", courseCode);
                     app.transition('view-theme.html', 'left');

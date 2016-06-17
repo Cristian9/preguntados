@@ -9,7 +9,7 @@ var app = (function(){
             imageURL : "../../statics/img/ring.svg"
         },
         domainURL = "http://10.30.15.218/API_Preguntados";
-        
+
     loadingImage.preload = new Image();
     loadingImage.preload.src = loadingImage.imageURL;
     loadingImage.preload.onload = loadingImage.cargaOK = true;
@@ -32,13 +32,12 @@ var app = (function(){
                 window.localStorage.setItem("name", data[0].firstname);
 
                 var options = {
-                    "direction"      : "right", // 'left|right|up|down', default 'right' (Android currently only supports left and right)
-                    "duration"       :  600, // in milliseconds (ms), default 400
-                    "iosdelay"       :   -1, // ms to wait for the iOS webview to update before animation kicks in, default 60
-                    "androiddelay"   :  -1,  // same as above but for Android, default 70
-                    //"winphonedelay"  :  150, // same as above but for Windows Phone, default 200
+                    "direction"      : "right",
+                    "duration"       :  600,
+                    "iosdelay"       :   -1,
+                    "androiddelay"   :  -1,
+                    "winphonedelay"  :  150,
                     "href"           : "views/main-view/list-main.html"
-                    //"href"           : "views/ranking/ranking.html"
                 };
                 window.plugins.nativepagetransitions.flip(
                     options,
@@ -152,9 +151,9 @@ var app = (function(){
                         return false;
                     }
                     for (var i = 0; i < data.length; i++) {
-                        lista += '<li class="item item-icon-left" alt="' + data[i].id + '">';
+                        lista += '<li><a data-transition="slide" class="item item-icon-left" alt="' + data[i].id + '">';
                         lista += '<i class="icon ion-ios-redo-outline"></i>' + data[i].description;
-                        lista += '</li>';
+                        lista += '</a></li>';
                     }
 
                     $('#list').append(lista);
@@ -211,9 +210,9 @@ var app = (function(){
         var lista = '';
 
         for (var i = 0; i < data.length; i++) {
-            lista += '<li class="item item-icon-left" alt="' + data[i].id + '">';
+            lista += '<li><a data-transition="slide" class="item item-icon-left" alt="' + data[i].id + '">';
             lista += '<i class="icon ion-ios-redo-outline"></i>' + data[i].description;
-            lista += '</li>';
+            lista += '</a></li>';
         }
 
         return lista;
@@ -242,7 +241,7 @@ var app = (function(){
 
         $('#wrapper').addClass('auxCSS');
 
-        $('#list').html($("<center style='padding:11%;'></center>").append(loadingImage.preload));
+        //$('#list').html($("<center style='padding:11%;'></center>").append(loadingImage.preload));
 
         if(typeof myScroll != "undefined") {
             myScroll.destroy();
@@ -250,6 +249,13 @@ var app = (function(){
             
             numberPage > 1 && (numberPage = 1);
         }
+
+        $.mobile.loading('show', {
+            text : 'Cargando...',
+            textVisible : true,
+            theme : 'b',
+            textonly : false
+        });
 
         $.ajax({
             type        : 'GET',
@@ -262,6 +268,8 @@ var app = (function(){
         })
         .done(function(data){
             var data = eval(data);
+            
+            $.mobile.loading("hide");
 
             if(data[0] == null) {
                 $('#list').html($("<center style='padding:11%; color:#B33831; font-size:15px; font-weight:bold;'></center>")
@@ -287,13 +295,13 @@ var app = (function(){
         
         var options = {
             "href" : href,
-            "direction" : direction,
+            //"direction" : direction,
             "duration" : 600,
-            "androiddelay" : 500,
-            "iosdelay" : 500
+            "androiddelay" : -1,
+            "iosdelay" : -1
         };
 
-        window.plugins.nativepagetransitions.slide(
+        window.plugins.nativepagetransitions.fade(
             options,
             function (msg) {console.log("success: " + msg)},
             function (msg) {alert("error: " + msg)}
