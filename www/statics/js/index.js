@@ -4,19 +4,22 @@ var app = (function(){
         myScroll,
         myScrollMenu,
         numberPage = 1,
-        loadingImage = {
-            cargaOK : false,
-            imageURL : "../../statics/img/ring.svg"
-        },
         domainURL = "http://10.30.15.218/API_Preguntados";
 
-    loadingImage.preload = new Image();
-    loadingImage.preload.src = loadingImage.imageURL;
-    loadingImage.preload.onload = loadingImage.cargaOK = true;
+    String.prototype.ucfirst = function(){
+        return this.charAt(0).toUpperCase() + this.substr(1);
+    }
 
     function login() {
+        $('#message').text("");
+
         var user = $('#txtuser').val();
         var pass = $('#txtpass').val();
+
+        if(user == "" || pass == "") {
+            $('#message').text('Debe llenar los campos de usuario y password');
+            return false;
+        }
 
         spinnerplugin.show();
 
@@ -32,14 +35,13 @@ var app = (function(){
                 window.localStorage.setItem("name", data[0].firstname);
 
                 var options = {
-                    "direction"      : "right",
                     "duration"       :  600,
                     "iosdelay"       :   -1,
                     "androiddelay"   :  -1,
                     "winphonedelay"  :  150,
                     "href"           : "views/main-view/list-main.html"
                 };
-                window.plugins.nativepagetransitions.flip(
+                window.plugins.nativepagetransitions.fade(
                     options,
                     function (msg) {console.log("success: " + msg)},
                     function (msg) {alert("error: " + msg)}
@@ -129,37 +131,35 @@ var app = (function(){
         }
     }
 
-    function loadMoreData(page){
-        $('.tab-item').each(function(){
-            if($(this).hasClass('active')){
-                var href = $(this).attr('id');
-                $.ajax({
-                    type        : 'GET',
-                    url         : domainURL + "/" + href + "/",
-                    contentType : "application/json; charset=utf-8",
-                    dataType    : "json",
-                    data        : {
-                        'page' : page
-                    }
-                })
-                .done(function(data){
-                    var data = eval(data);
-                    var lista = "";
-                    if(data[0] == null) {
-                        pullUpEl.className = '';
-                        pullUpEl.querySelector('.pullUpLabel').innerHTML = 'No hay registros para mostrar.';
-                        return false;
-                    }
-                    for (var i = 0; i < data.length; i++) {
-                        lista += '<li><a data-transition="slide" class="item item-icon-left" alt="' + data[i].id + '">';
-                        lista += '<i class="icon ion-ios-redo-outline"></i>' + data[i].description;
-                        lista += '</a></li>';
-                    }
+    function loadMoreData(numberOfPage){
 
-                    $('#list').append(lista);
-                    myScroll.refresh();
-                });
+        var href = window.localStorage.getItem('href');
+        $.ajax({
+            type        : 'GET',
+            url         : domainURL + "/" + href + "/",
+            contentType : "application/json; charset=utf-8",
+            dataType    : "json",
+            data        : {
+                'page'  : numberOfPage,
+                'course': window.localStorage.getItem('courseId')
             }
+        })
+        .done(function(data){
+            var data = eval(data);
+            var lista = "";
+            if(data[0] == null) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = 'No hay registros para mostrar.';
+                return false;
+            }
+            for (var i = 0; i < data.length; i++) {
+                lista += '<li><a data-transition="slide" class="item item-icon-left" alt="' + data[i].id + '">';
+                lista += '<i class="icon ion-compose"></i>' + data[i].description.toLowerCase().ucfirst();
+                lista += '</a></li>';
+            }
+
+            $('#list').append(lista);
+            myScroll.refresh();
         });
     }
 
@@ -200,7 +200,7 @@ var app = (function(){
                 } else if (pullUpEl.className.match('flip')) {
                     pullUpEl.className = 'loading';
                     pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Cargando...';                
-                    loadMoreData((++numberPage));
+                    loadMoreData(++numberPage);
                 }
             }
         });
@@ -210,8 +210,8 @@ var app = (function(){
         var lista = '';
 
         for (var i = 0; i < data.length; i++) {
-            lista += '<li><a data-transition="slide" class="item item-icon-left" alt="' + data[i].id + '">';
-            lista += '<i class="icon ion-ios-redo-outline"></i>' + data[i].description;
+            lista += '<li><a class="item item-icon-left" alt="' + data[i].id + '">';
+            lista += '<i class="icon ion-compose"></i>' + data[i].description.toLowerCase().ucfirst();
             lista += '</a></li>';
         }
 
@@ -224,7 +224,7 @@ var app = (function(){
         for (var i = 0; i < data.length; i++) {
             lista += '<div class="item item-button-right">' + data[i].usuario +  
                     '<button class="button button-positive">' + 
-                    'RETAR' + 
+                    'Retar' + 
                     '</button></div>';
         };
 
@@ -235,15 +235,17 @@ var app = (function(){
 
         var href = option.href,
             func = option.func,
-            args = option.args || "";
+            args = option.args || "",
+            elem = option.elem || "list",
+            ptop = option.ptop;
 
-        StyleApp(92);
+        window.localStorage.setItem('href', href);
 
-        $('#wrapper').addClass('auxCSS');
+        StyleApp(ptop);
 
-        //$('#list').html($("<center style='padding:11%;'></center>").append(loadingImage.preload));
+        $('#wrapper, #wrapper-ranking').addClass('auxCSS');
 
-        if(typeof myScroll != "undefined") {
+        if(typeof myScroll != "undefined" && myScroll != null) {
             myScroll.destroy();
             myScroll = null;
             
@@ -259,11 +261,12 @@ var app = (function(){
 
         $.ajax({
             type        : 'GET',
-            url         : domainURL + "/" + href + "/" + args,
+            url         : domainURL + "/" + href + "/",
             contentType : "application/json; charset=utf-8",
             dataType    : "json",
             data        : {
-                'page'  : numberPage
+                'page'  : numberPage,
+                'course': args
             }
         })
         .done(function(data){
@@ -272,7 +275,7 @@ var app = (function(){
             $.mobile.loading("hide");
 
             if(data[0] == null) {
-                $('#list').html($("<center style='padding:11%; color:#B33831; font-size:15px; font-weight:bold;'></center>")
+                $('#' + elem).html($("<center style='padding:11%; color:#B33831; font-size:15px; font-weight:bold;'></center>")
                           .append('No hay registros para mostrar'));
 
                 return false;
@@ -280,7 +283,7 @@ var app = (function(){
 
             var list = eval(func + "(data)");
             
-            $('#list').html(list);
+            $('#' + elem).html(list);
 
             $('#pullUp, #pullDown').removeClass('hide').addClass('show');
 
@@ -290,12 +293,11 @@ var app = (function(){
         new FastClick(document.body);
     }
 
-    function transition( href, direction ) {
+    function transition( href ) {
         spinnerplugin.show();
         
         var options = {
             "href" : href,
-            //"direction" : direction,
             "duration" : 600,
             "androiddelay" : -1,
             "iosdelay" : -1

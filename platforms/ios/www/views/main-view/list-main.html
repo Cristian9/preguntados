@@ -9,7 +9,7 @@
         <title>Demo Menu</title>
     </head>
     <body>
-        <div id="cuerpo">
+        <div data-role="page" id="cuerpo">
             <div id="header" class="bar bar-header bar-positive">
                 <h1 class="title">Preguntados UTP</h1>
             </div>
@@ -54,27 +54,30 @@
 
                  app.getMainList({
                     href : 'list-courses',
-                    func : 'renderDefaultList'
-                });
-
-                $('.tab-item').each(function(){
-                    $(this).click(function(){
-                        var href = $(this).attr('id');
-                        $(this).addClass('active');
-                        $('.tab-item').not($(this)).removeClass('active');
-                        app.getMainList({
-                            href : href,
-                            func : 'renderDefaultList'
-                        });
-                    });
-                });
-
-                $('#list').on("click", "a", function(){
-                    var courseCode = $(this).attr('alt');
-                    window.localStorage.setItem("courseId", courseCode);
-                    app.transition('view-theme.html', 'left');
+                    func : 'renderDefaultList',
+                    ptop : 92
                 });
             }
+
+            $('.tab-item').each(function(){
+                $(this).click(function(){
+                    var href = $(this).attr('id');
+                    $(this).addClass('active');
+                    $('.tab-item').not($(this)).removeClass('active');
+                    app.getMainList({
+                        href : href,
+                        func : 'renderDefaultList',
+                        ptop : 92
+                    });
+                });
+            });
+
+            $('#list').on("vclick", "a", function(){
+                var courseCode = $(this).attr('alt');
+                window.localStorage.setItem("courseId", courseCode);
+                app.transition('view-theme.html');
+                //$.mobile.loadPage("view-theme.html", { transition: "slide" });
+            });
         </script>
     </body>
 </html>

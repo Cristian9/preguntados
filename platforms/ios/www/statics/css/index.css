@@ -45,6 +45,11 @@ a {
 
 }
 
+#message {
+    color:#ec1e1e;
+    font-weight: bold;
+}
+
 .ui-page-theme-a, a{
     font-weight: 100 !important;
 }
@@ -225,15 +230,15 @@ h1 {
     color:#fff;
 }
 
-#list a:hover {
+#list-ranking a:hover, #list a:hover {
     color:#fff !important;
 }
 
-#list a:active{
+#list-ranking a:active, #list a:active{
     background-color:#323a40 !important;
 }
 
-#list a:visited{
+#list-ranking a:visited, #list a:visited{
     background-color:#181c1f !important;
     color:#fff !important;
 }
