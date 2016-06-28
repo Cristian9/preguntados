@@ -101,10 +101,15 @@ h1 {
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
     border-radius: 8px;
+    color:#fff;
 }
 
 #header .btn:active {
     background-color:#0f6f91;
+}
+
+#header .row {
+    margin-top: 47px;
 }
 
 .logo{
@@ -221,7 +226,7 @@ h1 {
     text-align:center;
 }*/
 
-.scroller li a {
+.scroller li a, #ulMenu li {
     border-bottom:1px solid #202328;
     border-top:1px solid #202529;
     background-color:#181c1f;

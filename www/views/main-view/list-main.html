@@ -75,7 +75,7 @@
             $('#list').on("vclick", "a", function(){
                 var courseCode = $(this).attr('alt');
                 window.localStorage.setItem("courseId", courseCode);
-                app.transition('view-theme.html');
+                app.transition('../ranking/view-ranking.html');
             });
         </script>
     </body>

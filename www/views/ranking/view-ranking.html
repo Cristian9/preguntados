@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link rel="stylesheet" type="text/css" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+        <link rel="stylesheet" type="text/css" href="../../statics/css/ionic.css">
+        <link rel="stylesheet" type="text/css" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+        <link rel="stylesheet" media="all" type="text/css" href="../../statics/css/index.css" />
+        <title>Demo Menu</title>
+    </head>
+    <body>
+        <div id="menuprincipal">
+            <div id="wrapperMenu">
+                <div class="scroller">
+                    <div id="contenidoMenu">
+                        <ul id="ulMenu">
+                            <li>Menu Principal</li>
+                            <li>
+                                <div class="borde-menu color1"></div>
+                                <a href="javascript:app.menuSlide('1');">
+                                    <div class="opcion"><i class="ion ion-home"></i>&nbsp;&nbsp;Inicio</div>
+                                    <!--<div class="descripcion">Descripcion opcion</div>-->
+                                </a>
+                            </li>
+                            <li>
+                                <div class="borde-menu color2"></div>
+                                <a href="javascript:app.menuSlide('2');">
+                                    <div class="opcion"><i class="ion ion-help-circled"></i>&nbsp;&nbsp;Ayuda</div>
+                                </a>
+                            </li>
+                            <li>
+                                <div class="borde-menu color3"></div>
+                                <a href="javascript:app.menuSlide('3');">
+                                    <div class="opcion"><i class="ion ion-close-circled"></i>&nbsp;&nbsp;Salir</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="cuerpo">
+            <div id="header">
+                <div class="btn">
+                    <i class="icon ion-navicon-round" style="font-size: 27px;"></i>
+                </div>
+                <img class="logo" src="../../statics/img/logo.png" />
+                <div class="tabs-striped tabs-top tabs-icon-top tabs-background-positive tabs-color-light" style="z-index:2;">
+                    <div class="tabs">
+                        <a class="tab-item active" alt="ranking" href="ranking">
+                            <i class="icon ion-arrow-graph-up-right"></i>Ranking General
+                        </a>
+                        <a class="tab-item" alt="ranking" href="ranking_registered">
+                            <i class="icon ion-arrow-graph-up-right"></i>Ranking Matriculados
+                        </a>
+                        <a class="tab-item" alt="sent_challenge" href="sent_challenge">
+                            <i class="icon ion-paper-airplane"></i>Enviados
+                        </a>
+                        <a class="tab-item" alt="receive_challenge" href="receive_challenge">
+                            <i class="icon ion-fireball"></i>Recibidos
+                        </a>
+                        <a class="tab-item" alt="history" href="history">
+                            <i class="icon ion-clipboard"></i>Historial
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col col-50" id="year">
+                        <select>
+                            <option value="0">:: A&ntilde;o</option>
+                        </select>
+                    </div>
+                    <div class="col col-50">
+                        <select>
+                            <option value="0">:: Mes ::</option>
+                            <option value="1">Enero</option>
+                            <option value="2">Febrero</option>
+                            <option value="3">Marzo</option>
+                            <option value="4">Abril</option>
+                            <option value="5">Mayo</option>
+                            <option value="6">Junio</option>
+                            <option value="7">Julio</option>
+                            <option value="8">Agosto</option>
+                            <option value="9">Septiembre</option>
+                            <option value="10">Octubre</option>
+                            <option value="11">Noviembre</option>
+                            <option value="12">Diciembre</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div id="wrapper">
+                <div class="scroller">
+                    <div id="pullDown" class="hide">
+                        <span class="pullDownIcon"></span><span class="pullDownLabel"></span>
+                    </div>
+
+                    <div class="list" id="list"></div>
+
+                    <div id="pullUp" class="hide">
+                        <span class="pullUpIcon"></span><span class="pullUpLabel">Desliza para cargar m&aacute;s...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="../../cordova.js"></script>
+    <script type="text/javascript" src="../../statics/js/libs/jquery/jquery.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" src="../../statics/js/libs/fastclick.js"></script>
+    <script type="text/javascript" src="../../statics/js/libs/iscroll.js"></script>
+    <script type="text/javascript" src="../../statics/js/index.js"></script>
+    <script type="text/javascript">
+
+        document.addEventListener("deviceready", onReady, false);
+
+        function onReady() {
+            window.plugins.nativepagetransitions.executePendingTransition();
+            spinnerplugin.hide();
+
+            app.getYears();
+
+            var course = window.localStorage.getItem("courseId");
+
+            app.getMainList({
+                href : 'view-ranking',
+                func : 'renderRanking',
+                args : course,
+                ptop : 200
+            });
+
+            app.InitmenuSlide(200);
+            $('#wrapper').on('swiperight', function () {
+                app.menuSlide('menu');
+            });
+
+            $('#wrapper').on('swipeleft', function () {
+                app.menuSlide('menu');
+            });
+
+            $('.btn').on("vclick", function(){
+                app.menuSlide('menu');
+            });
+            
+            app.TabNav();
+
+            document.addEventListener("backbutton", onBackButton, false);
+        }
+
+        function onBackButton() {
+            app.transition('../main-view/list-main.html');
+        }
+    </script>
+</html>

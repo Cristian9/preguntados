@@ -4,18 +4,24 @@ var app = (function(){
         myScroll,
         myScrollMenu,
         numberPage = 1,
-        /*loadingImage = {
-            cargaOK : false,
-            imageURL : "../../statics/img/ring.svg"
-        },*/
-        domainURL = "http://10.30.15.218/API_Preguntados";
-
-    /*loadingImage.preload = new Image();
-    loadingImage.preload.src = loadingImage.imageURL;
-    loadingImage.preload.onload = loadingImage.cargaOK = true;*/
+        apiRestDomain = "http://10.30.15.218/API_Preguntados";
 
     String.prototype.ucfirst = function(){
         return this.charAt(0).toUpperCase() + this.substr(1);
+    }
+
+    function getYears() {
+        var fecha = new Date();
+        var year = fecha.getFullYear();
+        var select = "";
+        
+        for(var init = 2015; init <= year; init++) {
+            select += "<option value='" + init + "'>" + init + "</option>";
+        }
+
+        select += "</select>";
+
+        $('#year select').append(select);
     }
 
     function login() {
@@ -31,7 +37,7 @@ var app = (function(){
 
         spinnerplugin.show();
 
-        $.post(domainURL + "/login/", {
+        $.post(apiRestDomain + "/login/", {
             user : user,
             pass : pass
         })
@@ -43,7 +49,6 @@ var app = (function(){
                 window.localStorage.setItem("name", data[0].firstname);
 
                 var options = {
-                    //"direction"      : "right",
                     "duration"       :  600,
                     "iosdelay"       :   -1,
                     "androiddelay"   :  -1,
@@ -88,19 +93,19 @@ var app = (function(){
         element.className = cn;
     }
 
-    function InitmenuSlide() {
+    function InitmenuSlide(top) {
         estado = "cuerpo";
 
-        StyleApp(92);
+        StyleApp(top);
 
         $('#cuerpo').addClass('page center');
         $('#menuprincipal').css({'display' : 'block'}).addClass('page center');
         $('#wrapper').addClass('auxCSS');
 
-        $.get('../opciones/opcion1.html')
+        /*$.get('../opciones/opcion1.html')
         .done(function(data){
             $('#contenidoCuerpo').html(data);
-        });
+        });*/
 
         // Creamos los 2 scroll mediante el plugin iscroll, uno para el menœ principal y otro para el cuerpo
         myScroll = new iScroll('wrapper', { hideScrollbar: true });
@@ -145,7 +150,7 @@ var app = (function(){
         var href = window.localStorage.getItem('href');
         $.ajax({
             type        : 'GET',
-            url         : domainURL + "/" + href + "/",
+            url         : apiRestDomain + "/" + href + "/",
             contentType : "application/json; charset=utf-8",
             dataType    : "json",
             data        : {
@@ -231,7 +236,7 @@ var app = (function(){
         var lista = "";
 
         for (var i = 0; i < data.length; i++) {
-            lista += '<div class="item item-button-right">' + data[i].usuario +  
+            lista += '<div class="item item-button-right">' + data[i].usuario.toLowerCase().ucfirst() +  
                     '<button class="button button-positive">' + 
                     'Retar' + 
                     '</button></div>';
@@ -270,7 +275,7 @@ var app = (function(){
 
         $.ajax({
             type        : 'GET',
-            url         : domainURL + "/" + href + "/",
+            url         : apiRestDomain + "/" + href + "/",
             contentType : "application/json; charset=utf-8",
             dataType    : "json",
             data        : {
@@ -325,7 +330,8 @@ var app = (function(){
             $(this).click(function(e){
                 e.preventDefault();
                 var uri = $(this).attr("href");
-                $('#contenidoCuerpo').load("../" + uri + "/" + uri + ".html");
+                var route = $(this).attr('alt');
+                $('#list').load("../" + route + "/" + uri + ".html");
                 $('.tab-item').not($(this)).removeClass('active');
                 $(this).addClass('active');
             });
@@ -338,6 +344,7 @@ var app = (function(){
         InitmenuSlide   : InitmenuSlide,
         menuSlide       : menuSlide,
         TabNav          : TabNav,
-        transition      : transition
+        transition      : transition,
+        getYears        : getYears
     };
 })();
