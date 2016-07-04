@@ -6,10 +6,11 @@
         <link rel="stylesheet" type="text/css" href="../../statics/css/ionic.css">
         <link rel="stylesheet" type="text/css" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
         <link rel="stylesheet" media="all" type="text/css" href="../../statics/css/index.css" />
+        <!--<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.css">-->
         <title>Demo Menu</title>
     </head>
     <body>
-        <div id="menuprincipal">
+        <div id="menuprincipal" class="menuprincipal">
             <div id="wrapperMenu">
                 <div class="scroller">
                     <div id="contenidoMenu">
@@ -17,20 +18,20 @@
                             <li>Menu Principal</li>
                             <li>
                                 <div class="borde-menu color1"></div>
-                                <a href="javascript:app.menuSlide('1');">
+                                <a href="javascript:appSlide();">
                                     <div class="opcion"><i class="ion ion-home"></i>&nbsp;&nbsp;Inicio</div>
                                     <!--<div class="descripcion">Descripcion opcion</div>-->
                                 </a>
                             </li>
                             <li>
                                 <div class="borde-menu color2"></div>
-                                <a href="javascript:app.menuSlide('2');">
+                                <a href="javascript:appSlide();">
                                     <div class="opcion"><i class="ion ion-help-circled"></i>&nbsp;&nbsp;Ayuda</div>
                                 </a>
                             </li>
                             <li>
                                 <div class="borde-menu color3"></div>
-                                <a href="javascript:app.menuSlide('3');">
+                                <a href="javascript:appSlide();">
                                     <div class="opcion"><i class="ion ion-close-circled"></i>&nbsp;&nbsp;Salir</div>
                                 </a>
                             </li>
@@ -39,27 +40,27 @@
                 </div>
             </div>
         </div>
-        <div id="cuerpo">
-            <div id="header">
-                <div class="btn">
-                    <i class="icon ion-navicon-round" style="font-size: 27px;"></i>
-                </div>
-                <img class="logo" src="../../statics/img/logo.png" />
+        <div class="btn-slide" id="btn-slide">
+            <i class="icon-menu" id="icon-slide" style="font-size: 27px;"></i>
+        </div>
+        <div data-role="page" id="cuerpo">
+            <div class="header">
+                <h3 class="title" id="title-course"></h3>
                 <div class="tabs-striped tabs-top tabs-icon-top tabs-background-positive tabs-color-light" style="z-index:2;">
                     <div class="tabs">
-                        <a class="tab-item active" alt="ranking" href="ranking">
+                        <a class="tab-item active" id="view-ranking" onclick="app.TabNav(this.id, 'renderRanking', this, 200, 200)">
                             <i class="icon ion-arrow-graph-up-right"></i>Ranking General
                         </a>
-                        <a class="tab-item" alt="ranking" href="ranking_registered">
-                            <i class="icon ion-arrow-graph-up-right"></i>Ranking Matriculados
+                        <a class="tab-item" id="get-ranking_registered" onclick="app.TabNav(this.id, 'renderRanking', this, 200, 200)">
+                            <i class="icon ion-arrow-graph-up-right" ></i>Ranking Matriculados
                         </a>
-                        <a class="tab-item" alt="sent_challenge" href="sent_challenge">
+                        <a class="tab-item" id="get-sent_challenge" onclick="app.TabNav(this.id, 'renderRanking', this, 200, 200)">
                             <i class="icon ion-paper-airplane"></i>Enviados
                         </a>
-                        <a class="tab-item" alt="receive_challenge" href="receive_challenge">
+                        <a class="tab-item" id="get-receive_challenge" onclick="app.TabNav(this.id, 'renderRanking', this, 200, 200)">
                             <i class="icon ion-fireball"></i>Recibidos
                         </a>
-                        <a class="tab-item" alt="history" href="history">
+                        <a class="tab-item" id="get-history" onclick="app.TabNav(this.id, 'renderRanking', this, 200, 200)">
                             <i class="icon ion-clipboard"></i>Historial
                         </a>
                     </div>
@@ -71,7 +72,7 @@
                         </select>
                     </div>
                     <div class="col col-50">
-                        <select>
+                        <select id="mes">
                             <option value="0">:: Mes ::</option>
                             <option value="1">Enero</option>
                             <option value="2">Febrero</option>
@@ -103,54 +104,96 @@
                     </div>
                 </div>
             </div>
+            <div data-role="popup" id="popupDialog" data-overlay-theme="b" data-theme="b" class="popup">
+                <div role="main" class="ui-content">
+                    <h3 class="ui-title">Vamos a iniciar el juego!!!</h3>
+                    <p>Se enviar&aacute; una notificaci&oacute;n al usuario</p>
+                    <a href="#questions" id="btn-aceptar" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-transition="flow">Aceptar</a>
+                </div>
+            </div>
         </div>
+
+        <!-- Página de preguntas -->
+
+        <div data-role="page" id="questions">
+            <div class="header">
+                <a href="#cuerpo" data-role="button" data-theme="b" data-rel="back" data-icon="back" data-iconpos="left" class="ui-btn-left">
+                    Regresar
+                </a>
+                <h3 class="title" id="title-course-preguntas"></h3>
+                <div class="tabs-striped tabs-top tabs-icon-top tabs-background-positive tabs-color-light" style="z-index:2;">
+                    <div class="bar bar-stable">
+                        <h1 class="title"></h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col col-70" id="questionDescription">
+                        <h5></h5>
+                    </div>
+                    <div class="col col-30" id="timer">
+                        <h5></h5>
+                    </div>
+                </div><hr>
+            </div>
+            <div id="wrapper-questions"></div>
+            <div id="next" style="position: relative; top:491px; text-align:center;"><button class="button button-calm">Siguiente</button></div>
+        </div>
+
     </body>
     <script type="text/javascript" src="../../cordova.js"></script>
     <script type="text/javascript" src="../../statics/js/libs/jquery/jquery.js"></script>
+    <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>-->
     <script type="text/javascript" src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <script type="text/javascript" src="../../statics/js/libs/fastclick.js"></script>
     <script type="text/javascript" src="../../statics/js/libs/iscroll.js"></script>
     <script type="text/javascript" src="../../statics/js/index.js"></script>
     <script type="text/javascript">
-
         document.addEventListener("deviceready", onReady, false);
 
         function onReady() {
-            alert(1);
             window.plugins.nativepagetransitions.executePendingTransition();
             spinnerplugin.hide();
 
             app.getYears();
 
+            $('#title-course, #title-course-preguntas').text(window.localStorage.getItem("courseName"));
             var course = window.localStorage.getItem("courseId");
 
             app.getMainList({
                 href : 'view-ranking',
                 func : 'renderRanking',
                 args : course,
-                ptop : 200
-            });
-
-            app.InitmenuSlide(200);
-            $('#wrapper').on('swiperight', function () {
-                app.menuSlide('menu');
-            });
-
-            $('#wrapper').on('swipeleft', function () {
-                app.menuSlide('menu');
-            });
-
-            $('.btn').on("vclick", function(){
-                app.menuSlide('menu');
+                ptop : 200,
+                pwid : 200
             });
             
-            app.TabNav();
+            app.initMenuAnimation(200, 200);
 
             document.addEventListener("backbutton", onBackButton, false);
+
+            var btn_slide = document.getElementById('btn-slide');
+            btn_slide.addEventListener('touchstart', appSlide);
         }
+
+        $(document).on('pagebeforeshow', '#questions', function(){
+            $('#btn-slide').hide();
+            app.getQuestions();
+        });
+
+        $(document).on('pagehide', '#questions', function(){
+            $('#btn-slide').show();
+        });
+
+        $(document).on("vclick", ".btn-retar", function(){
+            $('#popupDialog').popup('open', {transition: "flow", x:screen.width / 2, y:screen.height / 2});
+        });
 
         function onBackButton() {
             app.transition('../main-view/list-main.html');
+        }
+
+        function appSlide() {
+            document.getElementById('menuprincipal').classList.toggle('btn-slide-active');
         }
     </script>
 </html>

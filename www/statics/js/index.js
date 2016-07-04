@@ -1,9 +1,10 @@
 var app = (function(){
 
-    var estado,
-        myScroll,
+    var myScroll,
+        timerInicial = 30,
         myScrollMenu,
         numberPage = 1,
+        clearTimer,
         apiRestDomain = "http://10.30.15.218/API_Preguntados";
 
     String.prototype.ucfirst = function(){
@@ -49,7 +50,7 @@ var app = (function(){
                 window.localStorage.setItem("name", data[0].firstname);
 
                 var options = {
-                    "duration"       :  600,
+                    "duration"       :  200,
                     "iosdelay"       :   -1,
                     "androiddelay"   :  -1,
                     "winphonedelay"  :  150,
@@ -65,8 +66,8 @@ var app = (function(){
         
     }
 
-    function StyleApp(topParam) {
-        var heightCuerpo=window.innerHeight-92/*46*/;
+    function StyleApp(topParam, heightParam) {
+        var heightCuerpo=window.innerHeight-heightParam;//92/*46*/;
         var style = document.createElement('style');
         style.type = 'text/css';
         style.innerHTML = '.auxCSS { position:absolute; z-index:2; left:0; top:' + 
@@ -93,19 +94,9 @@ var app = (function(){
         element.className = cn;
     }
 
-    function InitmenuSlide(top) {
-        estado = "cuerpo";
-
-        StyleApp(top);
-
-        $('#cuerpo').addClass('page center');
-        $('#menuprincipal').css({'display' : 'block'}).addClass('page center');
-        $('#wrapper').addClass('auxCSS');
-
-        /*$.get('../opciones/opcion1.html')
-        .done(function(data){
-            $('#contenidoCuerpo').html(data);
-        });*/
+    function InitmenuSlide(top, height) {
+        StyleApp(top, height);
+        $('#wrapper, #wrapper-questions').addClass('auxCSS');
 
         // Creamos los 2 scroll mediante el plugin iscroll, uno para el menœ principal y otro para el cuerpo
         myScroll = new iScroll('wrapper', { hideScrollbar: true });
@@ -113,38 +104,6 @@ var app = (function(){
         
         new FastClick(document.body);
     }
-
-    function menuSlide( opt ) {
-        $('#cuerpo').addClass('page transition');
-
-        if (opt == "menu") {
-            if (estado == "cuerpo") {
-                $('#cuerpo').removeClass('center').addClass('right');
-                estado = "menuprincipal";
-            } else {
-                $('#cuerpo').removeClass('right').addClass('center');
-                estado = "cuerpo";
-            }
-        } else {
-            addClass('li-menu-activo' , document.getElementById("ulMenu").getElementsByTagName("li")[opt]);
-
-            $.get("../opciones/opcion" + opt + ".html")
-            .done(function(data) {
-                $('#contenidoCuerpo').html(data);
-            });
-
-            myScroll.refresh();
-            myScroll.scrollTo(0,0);
-
-            $('#cuerpo').removeClass('right').addClass('center');
-            estado = "cuerpo";
-
-            setTimeout(function() {
-                removeClass('li-menu-activo' , document.getElementById("ulMenu").getElementsByTagName("li")[opt]);
-            }, 300);
-        }
-    }
-
     function loadMoreData(numberOfPage){
 
         var href = window.localStorage.getItem('href');
@@ -182,6 +141,11 @@ var app = (function(){
         pullDownOffset = pullDownEl.offsetHeight;
         pullUpEl = document.getElementById('pullUp');   
         pullUpOffset = pullUpEl.offsetHeight;
+
+        if(typeof myScroll != "undefined" && myScroll != null) {
+            myScroll.destroy();
+            myScroll = null;
+        }
 
         myScroll = new iScroll('wrapper', { 
             hideScrollbar: true,
@@ -236,10 +200,16 @@ var app = (function(){
         var lista = "";
 
         for (var i = 0; i < data.length; i++) {
-            lista += '<div class="item item-button-right">' + data[i].usuario.toLowerCase().ucfirst() +  
-                    '<button class="button button-positive">' + 
-                    'Retar' + 
-                    '</button></div>';
+            lista += '<div class="row">' + 
+                '<div class="col col-33 item">' + 
+                    data[i].usuario.toLowerCase().ucfirst() + 
+                '</div>' + 
+                '<div class="col col-33 item" style="text-align:center">' + 
+                    data[i].puntaje + ' Pts.' + 
+                '</div>' + 
+                '<div class="col col-33 item" style="text-align:center">' + 
+                    '<button class="button button-positive btn-retar">Retar</button>' + 
+                '</div></div>';
         };
 
         return lista;
@@ -251,11 +221,12 @@ var app = (function(){
             func = option.func,
             args = option.args || "",
             elem = option.elem || "list",
-            ptop = option.ptop;
+            ptop = option.ptop,
+            pwid = option.pwid;
 
         window.localStorage.setItem('href', href);
 
-        StyleApp(ptop);
+        StyleApp(ptop, pwid);
 
         $('#wrapper, #wrapper-ranking').addClass('auxCSS');
 
@@ -297,7 +268,7 @@ var app = (function(){
 
             var list = eval(func + "(data)");
             
-            $('#' + elem).html(list);
+            $('#' + elem).empty().html(list);
 
             $('#pullUp, #pullDown').removeClass('hide').addClass('show');
 
@@ -312,7 +283,7 @@ var app = (function(){
         
         var options = {
             "href" : href,
-            "duration" : 600,
+            "duration" : 200,
             "androiddelay" : -1,
             "iosdelay" : -1
         };
@@ -325,26 +296,77 @@ var app = (function(){
         new FastClick(document.body);
     }
 
-    function TabNav() {
-        $('.tab-item').each(function(){
-            $(this).click(function(e){
-                e.preventDefault();
-                var uri = $(this).attr("href");
-                var route = $(this).attr('alt');
-                $('#list').load("../" + route + "/" + uri + ".html");
-                $('.tab-item').not($(this)).removeClass('active');
-                $(this).addClass('active');
+    function TabNav(href, fn, item, top, height) {
+        item.classList.add('active');
+
+        $('.tab-item').not(item).removeClass('active');
+
+        getMainList({
+            href : href,
+            func : fn,
+            args : window.localStorage.getItem("courseId"),
+            ptop : top,
+            pwid : height
+        });
+
+        myScroll = new iScroll('wrapper', { hideScrollbar: true });
+    }
+
+    function initMenuAnimation(top, height) {
+        InitmenuSlide(top, height);
+        $('#cuerpo').on('swipeleft', function () {
+            document.getElementById('menuprincipal').classList.remove('btn-slide-active');
+        });
+
+        $('#cuerpo').on('swiperight', function () {   
+            document.getElementById('menuprincipal').classList.add('btn-slide-active');
+        });
+    }
+
+    function getQuestions() {
+        timerInicial = 30;
+        clearTimeout(clearTimer);
+        $.getJSON(apiRestDomain + '/getQuestions/',{
+            course : window.localStorage.getItem('courseId')
+        })
+        .done(function(dataQuestion){
+            var pregunta_id = dataQuestion[0].id_preguntas;
+            //alert(data[0].preguntas);
+            $.getJSON(apiRestDomain + '/getResultQuestion/', {
+                question_id : pregunta_id
+            })
+            .done(function(dataAnswer){
+                $('#questionDescription h5').text(dataQuestion[0].preguntas);
+
+                var btn = "";
+
+                for (var i = 0; i < dataAnswer.length; i++) {
+                    btn += '<button class="button button-block button-stable ui-btn ui-shadow ui-corner-all">' + dataAnswer[i].respuesta + '</button>';
+                }
+
+                $('#wrapper-questions').empty().append(btn);
+                timer();
             });
         });
     }
 
+    function timer() {
+        if(timerInicial > 0) {
+            $('#timer h5').empty().html(timerInicial);
+            clearTimer = setTimeout(function(){
+                timerInicial -= 1;
+                timer();
+            }, 1000);
+        }
+    }
+
     return {
-        login           : login,
-        getMainList     : getMainList,
-        InitmenuSlide   : InitmenuSlide,
-        menuSlide       : menuSlide,
-        TabNav          : TabNav,
-        transition      : transition,
-        getYears        : getYears
+        login             : login,
+        getMainList       : getMainList,
+        transition        : transition,
+        getYears          : getYears,
+        initMenuAnimation : initMenuAnimation,
+        TabNav            : TabNav,
+        getQuestions      : getQuestions
     };
 })();

@@ -8,22 +8,54 @@
         <link rel="stylesheet" media="all" type="text/css" href="../../statics/css/index.css" />
         <title>Demo Menu</title>
     </head>
-    <body>
-        <div data-role="page" id="cuerpo">
-            <div id="header" class="bar bar-header bar-positive">
-                <h1 class="title">Preguntados UTP</h1>
-            </div>
-            <div class="tabs-striped tabs-top tabs-icon-top tabs-background-positive tabs-color-light" style="z-index:2;">
-                <div class="tabs">
-                    <a class="tab-item active" id="list-courses">
-                        <i class="icon ion-ios-paper"></i>Cursos
-                    </a>
-                    <a class="tab-item" id="list-categories">
-                        <i class="icon ion-clipboard"></i>Categor&iacute;as
-                    </a>
+    <body translate="no">
+        <div id="menuprincipal" class="menuprincipal">
+            <div id="wrapperMenu">
+                <div class="scroller">
+                    <div id="contenidoMenu">
+                        <ul id="ulMenu">
+                            <li>Menu Principal</li>
+                            <li>
+                                <div class="borde-menu color1"></div>
+                                <a href="javascript:app.menuSlide('1');">
+                                    <div class="opcion"><i class="ion ion-home"></i>&nbsp;&nbsp;Inicio</div>
+                                    <!--<div class="descripcion">Descripcion opcion</div>-->
+                                </a>
+                            </li>
+                            <li>
+                                <div class="borde-menu color2"></div>
+                                <a href="javascript:app.menuSlide('2');">
+                                    <div class="opcion"><i class="ion ion-help-circled"></i>&nbsp;&nbsp;Ayuda</div>
+                                </a>
+                            </li>
+                            <li>
+                                <div class="borde-menu color3"></div>
+                                <a href="javascript:app.menuSlide('3');">
+                                    <div class="opcion"><i class="ion ion-close-circled"></i>&nbsp;&nbsp;Salir</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            
+        </div>
+        <div class="btn-slide" id="btn-slide">
+            <i class="icon-menu" id="icon-slide" style="font-size: 27px;"></i>
+        </div>
+        <div id="cuerpo">
+            <div class="header bar bar-header">
+                <h1 class="title">Preguntados UTP</h1>
+                <div class="tabs-striped tabs-top tabs-icon-top tabs-background-positive tabs-color-light" style="z-index:2;">
+                    <div id="tab" class="tabs">
+                        <a class="tab-item active" id="list-courses" onclick="app.TabNav(this.id, 'renderDefaultList', this, 92, 92)">
+                            <i class="icon ion-ios-paper"></i>Cursos
+                        </a>
+                        <a class="tab-item" id="list-categories" onclick="app.TabNav(this.id, 'renderDefaultList', this, 92, 92)">
+                            <i class="icon ion-clipboard"></i>Categor&iacute;as
+                        </a>
+                    </div>
+                </div>
+            </div>
             <div id="wrapper">
                 <div class="scroller">
                     <div id="pullDown"  class="hide">
@@ -55,26 +87,25 @@
                  app.getMainList({
                     href : 'list-courses',
                     func : 'renderDefaultList',
-                    ptop : 92
+                    ptop : 92,
+                    pwid : 92
                 });
+
+                app.initMenuAnimation(92, 92);
+
+                var btn_slide = document.getElementById('btn-slide');
+                btn_slide.addEventListener('touchstart', appSlide);
             }
 
-            $('.tab-item').each(function(){
-                $(this).click(function(){
-                    var href = $(this).attr('id');
-                    $(this).addClass('active');
-                    $('.tab-item').not($(this)).removeClass('active');
-                    app.getMainList({
-                        href : href,
-                        func : 'renderDefaultList',
-                        ptop : 92
-                    });
-                });
-            });
+            function appSlide() {
+                document.getElementById('menuprincipal').classList.toggle('btn-slide-active');
+            }
 
             $('#list').on("vclick", "a", function(){
                 var courseCode = $(this).attr('alt');
+                var courseName = $(this).text();
                 window.localStorage.setItem("courseId", courseCode);
+                window.localStorage.setItem("courseName", courseName);
                 app.transition('../ranking/view-ranking.html');
             });
         </script>

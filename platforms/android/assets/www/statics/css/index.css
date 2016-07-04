@@ -20,6 +20,42 @@
     -webkit-user-select: none;
 }*/
 
+@font-face {
+    font-family: 'icomoon';
+    src:    url('../fonts/icomoon.eot?jxkzuh');
+    src:    url('../fonts/icomoon.eot?jxkzuh#iefix') format('embedded-opentype'),
+        url('../fonts/icomoon.ttf?jxkzuh') format('truetype'),
+        url('../fonts/icomoon.woff?jxkzuh') format('woff'),
+        url('../fonts/icomoon.svg?jxkzuh#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icomoon' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-menu:before {
+    content: "\e9bd";
+}
+.icon-cross:before {
+    content: "\ea0f";
+}
+.icon-enter:before {
+    content: "\ea13";
+}
+
 body {
     font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
     font-size:14px;
@@ -66,6 +102,9 @@ h1 {
     padding:0px;
     text-align:center;
 }
+h3 {
+    color:white;
+}
 .form-login {
     top: 30% !important;
 }
@@ -74,10 +113,8 @@ h1 {
 }
 
 /*Inicio estilos de la cabecera*/
-#menuprincipal {
-    display: none;
-}
-#header {
+
+.header{
     position:absolute; z-index:2;
     top:0; left:0;
     width:100%;
@@ -91,7 +128,13 @@ h1 {
     height: 45px;
 }
 
-#header .btn {
+#questions .header {
+    height: 59px;
+}
+#next button.ui-btn {
+    width: inherit;
+}
+.header .btn {
     position: absolute;
     top: 5px;
     left: 5px;
@@ -104,12 +147,12 @@ h1 {
     color:#fff;
 }
 
-#header .btn:active {
+.header .btn:active {
     background-color:#0f6f91;
 }
 
-#header .row {
-    margin-top: 47px;
+.header .row {
+    margin-top: 70px;
 }
 
 .logo{
@@ -129,7 +172,8 @@ h1 {
 
 #cuerpo h1{
     font-size:20px;
-    line-height:30px
+    line-height:30px;
+    color:white;
 }
 
 .borde-h1{
@@ -145,21 +189,33 @@ h1 {
 /*Final estilos del cuerpo*/
 
 /*Inicio estilos del menu principal*/
-#menuprincipal{
-    /*background:url(../img/fondo.jpg) repeat;*/
+.menuprincipal{
     position:absolute;
-    width: 100%;
+    width: 50%;
     height: 100%;
+    z-index: 3;
+    background: rgba(24, 28, 31, .9);
+    left:-50%;
+    padding-top: 20%;
+    transition:.3s;
 }
 
-#wrapperMenu {
-    position:absolute; z-index:1;
-    top:0;
-    bottom:0; left:0;
-    height:100%;
-    width:80%;
-    overflow:auto;
-    background: #181c1f;
+.btn-slide {
+    line-height: 3;
+    position: absolute;
+    z-index: 4;
+    width: 50px;
+    text-align: center;
+    padding-top: 8px;
+    background: #accfea;
+    border: solid 1px #accfea;
+    border-radius: 50%;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.btn-slide-active {
+    left: 0;
 }
 
 .borde-menu{
@@ -195,55 +251,44 @@ h1 {
 }
 /*Fin del estilo del menu principal*/
 
-/*Inicio estilos de las capas internas de los iscroll, tanto cuerpo como menu*/
-.scroller {
-    position:absolute; z-index:1;
-    width:100%;
-    padding:0;
-}
-
 .ui-loader h1 {
     color: #fff !important;
 }
 
-.scroller ul {
-    list-style:none;
-    padding:0;
-    margin:0;
-    width:100%;
-    text-align:left;
-    cursor: pointer;
-}
-
-/*.scroller li:first-child {
-    padding:0 10px;
+#ulMenu li {
     border-bottom:1px solid #202328;
     border-top:1px solid #202529;
-    background-color:#202529;
-    height:44px;
-    line-height:44px;
-    font-size:14px;
-    text-align:center;
-}*/
-
-.scroller li a, #ulMenu li {
-    border-bottom:1px solid #202328;
-    border-top:1px solid #202529;
-    background-color:#181c1f;
-    /*height:88px;*/
+    background: rgba(24, 28, 31, .2);
     height: 55px;
     color:#fff;
 }
 
-#list-ranking a:hover, #list a:hover {
+.scroller li a {
+    border-bottom:1px solid #202328;
+    border-top:1px solid #202529;
+    background-color:#181c1f;
+    height: 55px;
+    color:#fff;
+}
+
+#list a:hover {
     color:#fff !important;
 }
 
-#list-ranking a:active, #list a:active{
+#popupDialog h3 {
+    color: white;
+}
+
+.popup {
+    max-width: 400px;
+    text-align: center;
+}
+
+#list a:active, .scroller li:active{
     background-color:#323a40 !important;
 }
 
-#list-ranking a:visited, #list a:visited{
+#list a:visited{
     background-color:#181c1f !important;
     color:#fff !important;
 }
@@ -255,6 +300,10 @@ h1 {
 .scroller li a{
     width:100%;
     text-decoration: none;
+}
+
+.scroller li a:hover{
+    color:white;
 }
 
 .hide {
@@ -280,33 +329,11 @@ h1 {
     text-shadow: 0 1px #000;
     padding-bottom:25px
 }
+
+#questionDescription h5, #timer h5 {
+    color:#24c5bf;
+}
 /*Fin estilos de las capas internas de los iscroll, tanto cuerpo como menu*/
-
-/*Inicio c—digo de posici—n y transici—n de las p‡ginas*/
-.page {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-}
- 
-.page.center {
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-}
-
-.page.right {
-    -webkit-transform: translate3d(80%, 0, 0);
-    transform: translate3d(80%, 0, 0);
-}
- 
-.page.transition {
-    -webkit-transition-duration: .25s;
-    transition-duration: .25s;
-}
 
 /*@keyframes fade {
     from { opacity: 1.0; }
