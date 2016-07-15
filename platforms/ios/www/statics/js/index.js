@@ -4,6 +4,7 @@ var app = (function(){
         timerInicial = 30,
         myScrollMenu,
         numberPage = 1,
+        clearTimer,
         apiRestDomain = "http://10.30.15.218/API_Preguntados";
 
     String.prototype.ucfirst = function(){
@@ -323,6 +324,8 @@ var app = (function(){
     }
 
     function getQuestions() {
+        timerInicial = 30;
+        clearTimeout(clearTimer);
         $.getJSON(apiRestDomain + '/getQuestions/',{
             course : window.localStorage.getItem('courseId')
         })
@@ -349,10 +352,10 @@ var app = (function(){
 
     function timer() {
         if(timerInicial > 0) {
-            setTimeout(function(){
+            $('#timer h5').empty().html(timerInicial);
+            clearTimer = setTimeout(function(){
                 timerInicial -= 1;
                 timer();
-                $('#timer h5').empty().html(timerInicial);
             }, 1000);
         }
     }

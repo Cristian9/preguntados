@@ -117,7 +117,7 @@
 
         <div data-role="page" id="questions">
             <div class="header">
-                <a href="#page1" data-role="button" data-theme="b" data-rel="back" data-icon="back" data-iconpos="left" class="ui-btn-left">
+                <a href="#cuerpo" data-role="button" data-theme="b" data-rel="back" data-icon="back" data-iconpos="left" class="ui-btn-left">
                     Regresar
                 </a>
                 <h3 class="title" id="title-course-preguntas"></h3>
@@ -178,6 +178,10 @@
         $(document).on('pagebeforeshow', '#questions', function(){
             $('#btn-slide').hide();
             app.getQuestions();
+        });
+
+        $(document).on('pagehide', '#questions', function(){
+            $('#btn-slide').show();
         });
 
         $(document).on("vclick", ".btn-retar", function(){
